@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0"
+      xmlns="http://javafx.com/javafx/18"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="Interface.EnterController" fx:id="enterPane">
+   <children>
+      <Button layoutX="270.0" layoutY="229.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0"
+              text="Enter"
+              fx:id="enterButton"/>
+      <Button layoutX="270.0" layoutY="268.0" mnemonicParsing="false"
+              text="Registration"
+              onAction="#registrationButtonClick"
+              fx:id="registrationButton"/>
+      <TextField layoutX="236.0" layoutY="194.0" promptText="Password" />
+      <TextField layoutX="236.0" layoutY="159.0" promptText="Login" />
+      <Label layoutX="45.0" layoutY="31.0" prefHeight="25.0" prefWidth="140.0" text="Welcome to SaveBox" />
+      <Label layoutX="427.0" layoutY="35.0" prefHeight="17.0" prefWidth="149.0" text="Save and load your files" />
+   </children>
+</Pane>

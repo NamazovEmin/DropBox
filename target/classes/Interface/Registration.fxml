@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane fx:id="registrationPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Interface.EnterController">
+   <children>
+      <Button layoutX="260.0" layoutY="298.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Register" onAction="#registrationUserButton"/>
+      <Button fx:id="enterMenuButton" layoutX="260.0" layoutY="335.0" mnemonicParsing="false" onAction="#enterByLoginAndPasswordButton" prefHeight="25.0" prefWidth="80.0" text="Enter" />
+      <Label layoutX="236.0" layoutY="32.0" prefHeight="25.0" prefWidth="149.0" text="Register and get started" />
+      <VBox layoutX="221.0" layoutY="101.0" prefHeight="152.0" prefWidth="158.0">
+         <children>
+            <TextField promptText="Name" fx:id="name"/>
+            <TextField promptText="Surname" fx:id="surName" />
+            <TextField promptText="tel. number" fx:id="telNumber" />
+            <TextField promptText="e-mail" fx:id="email"/>
+            <TextField promptText="Login" fx:id="login"/>
+            <PasswordField prefHeight="28.0" prefWidth="158.0" promptText="Password"  fx:id="password"/>
+         </children>
+      </VBox>
+   </children>
+</Pane>
