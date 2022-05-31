@@ -10,5 +10,8 @@
         <module name="demo" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Interface" target="18" />
+    </bytecodeTargetLevel>
   </component>
 </project>
