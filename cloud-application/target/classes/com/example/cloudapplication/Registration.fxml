@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane fx:id="registrationPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.cloudapplication.EnterController">
+   <Button layoutX="260.0" layoutY="298.0" mnemonicParsing="false" onAction="#registrationUserButton" prefHeight="25.0"
+           prefWidth="80.0" text="Register"/>
+   <Button fx:id="enterMenuButton" layoutX="260.0" layoutY="335.0" mnemonicParsing="false"
+           onAction="#enterByLoginAndPasswordButton" prefHeight="25.0" prefWidth="80.0" text="Enter"/>
+   <Label layoutX="236.0" layoutY="32.0" prefHeight="25.0" prefWidth="149.0" text="Register and get started"/>
+   <VBox layoutX="221.0" layoutY="101.0" prefHeight="152.0" prefWidth="158.0">
+      <TextField fx:id="name" promptText="Name"/>
+      <TextField fx:id="surName" promptText="Surname"/>
+      <TextField fx:id="telNumber" promptText="tel. number"/>
+      <TextField fx:id="email" promptText="e-mail"/>
+      <TextField fx:id="login" promptText="Login"/>
+      <PasswordField fx:id="password" prefHeight="28.0" prefWidth="158.0" promptText="Password"/>
+   </VBox>
+   <Label fx:id="errorLabelRegistration" layoutX="226.0" layoutY="57.0" prefHeight="17.0" prefWidth="149.0"
+          textAlignment="CENTER">
+      <font>
+         <Font size="18.0"/>
+      </font>
+   </Label>
+</Pane>
+
+
+
+
