@@ -3,12 +3,10 @@ package com.example.cloudapplication;
 import com.example.cloud.CloudMessage;
 import io.netty.handler.codec.serialization.ObjectDecoderInputStream;
 import io.netty.handler.codec.serialization.ObjectEncoderOutputStream;
-
 import java.io.IOException;
 import java.net.Socket;
 
 public class Network {
-
 
     private final String name;
     private final String surname;
@@ -16,11 +14,11 @@ public class Network {
     private final String email;
     private final String login;
     private final String password;
-
-    private ObjectDecoderInputStream is;
-    private ObjectEncoderOutputStream os;
+    private final ObjectDecoderInputStream is;
+    private final ObjectEncoderOutputStream os;
 
     public Network(int port, String name, String surname, Long teNumber, String email, String login, String password) throws IOException {
+        System.out.println("new User");
         this.surname = surname;
         this.name = name;
         this.teNumber = teNumber;
@@ -49,19 +47,7 @@ public class Network {
         return surname;
     }
 
-    public Long getTeNumber() {
-        return teNumber;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
     public String getLogin() {
         return login;
-    }
-
-    public String getPassword() {
-        return password;
     }
 }

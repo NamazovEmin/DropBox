@@ -1,7 +1,6 @@
 package com.example.cloud;
 
 import lombok.Data;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,6 +23,4 @@ public class ListFiles implements CloudMessage {
     public void setName(String name) {
         this.name = name;
     }
-
-
 }

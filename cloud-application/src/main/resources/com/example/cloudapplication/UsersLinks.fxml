@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cloudapplication.LinkViewController">
+    <HBox layoutX="1.0" layoutY="-1.0" prefHeight="390.0" prefWidth="1000.0">
+        <ListView fx:id="allPathView" prefHeight="400.0" prefWidth="655.0" />
+        <VBox prefWidth="80.0">
+            <Button mnemonicParsing="false" onAction="#takeLink" prefHeight="130.0" prefWidth="80.0" text="TakeLink"/>
+            <Button mnemonicParsing="false" prefHeight="130.0" prefWidth="80.0" text="DeleteLink" onAction="#deleteLink"/>
+            <Button mnemonicParsing="false" prefHeight="130.0" prefWidth="80.0" text="DeleteAll" onAction="#deleteAllLink"/>
+        </VBox>
+        <VBox prefHeight="390.0" prefWidth="268.0">
+            <padding>
+                <Insets top="190" />
+            </padding>
+            <TextField fx:id="linkField" alignment="TOP_CENTER" prefHeight="25.0" prefWidth="187.0"/>
+        </VBox>
+    </HBox>
+</Pane>

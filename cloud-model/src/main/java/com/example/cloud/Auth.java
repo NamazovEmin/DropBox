@@ -33,6 +33,7 @@ public class Auth implements CloudMessage{
     public void setAccess(boolean access) {
         this.access = access;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -64,5 +65,4 @@ public class Auth implements CloudMessage{
     public String getEmail() {
         return email;
     }
-
 }

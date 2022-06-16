@@ -4,13 +4,10 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 public class EnterApplication extends Application {
     public static Stage frontStage;
-
-
 
     public  void run() {
         launch();
@@ -23,9 +20,5 @@ public class EnterApplication extends Application {
         stage.setTitle("SaveBox - Enter");
         stage.setScene(sceneEnter);
         stage.show();
-    }
-
-    public static void main(String[] args) {
-        launch();
     }
 }

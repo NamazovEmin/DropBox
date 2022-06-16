@@ -9,9 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-
 import java.io.IOException;
-
 
 public class EnterController {
     public Pane enterPane;
@@ -40,8 +38,6 @@ public class EnterController {
 
     @FXML
     protected void enterInSystem() throws Exception {
-
-
        if (loginEnter.getText().isEmpty() || passwordEnter.getText().isEmpty()){
            errorLabelEnter.setText("Enter your login and password");
        } else {
@@ -82,8 +78,8 @@ public class EnterController {
                    , email.getText(), login.getText(),password.getText(),false));
             clearTextAreaRegistration();
         }
-
     }
+
     private void readLoop() {
         try {
             while (true) {
@@ -124,11 +120,8 @@ public class EnterController {
                         });
                     } else {
                         authenticationService.close();
-                        Platform.runLater(() -> {
-                            errorLabelEnter.setText("Incorrect username or password");
-                        });
+                        Platform.runLater(() -> errorLabelEnter.setText("Incorrect username or password"));
                     }
-
                 }
             }
         } catch (Exception e) {
@@ -149,5 +142,4 @@ public class EnterController {
         loginEnter.clear();
         passwordEnter.clear();
     }
-
 }

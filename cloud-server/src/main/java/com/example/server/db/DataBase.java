@@ -1,8 +1,12 @@
 package com.example.server.db;
 
+import com.example.cloud.AllMyLinks;
 import com.example.cloud.Auth;
 
+import java.nio.file.Path;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DataBase {
     private static final String userNameDB = "root";
@@ -12,6 +16,7 @@ public class DataBase {
     private static Connection conn;
     public static Statement stmt;
     public static PreparedStatement pstmt;
+
 
     public DataBase() {
         try {
@@ -31,8 +36,7 @@ public class DataBase {
     }
 
     public static boolean insertNewUserInDataBase(String name, String surName, long telNumber, String email, String login, String password){
-        String sql = "INSERT INTO users (login, password, name, surname, telnumber, email)" +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO users (login, password, name, surname, telnumber, email) VALUES (?, ?, ?, ?, ?, ?)";
         try {
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, login);
@@ -69,5 +73,109 @@ public class DataBase {
             e.printStackTrace();
         }
         return auth;
+    }
+
+    public static boolean checkLink(StringBuilder fileLink) {
+        String link = fileLink.toString();
+        String sql = "SELECT * FROM links WHERE link = ?";
+        try {
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, link);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()){
+                if (rs.getString("link").equals(link)){
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return false;
+    }
+
+    public static boolean insertLink(String login, String fileLink, String path) {
+        String sql = "INSERT INTO links (link, path, users_id)" +
+                "VALUES (?, ?, " +
+                "(select id " +
+                "from users " +
+                "where login = ?))";
+        try {
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, fileLink);
+            pstmt.setString(2, path);
+            pstmt.setString(3, login);
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static Path findLink(String link) {
+        String sql = "SELECT * FROM links WHERE link = ?";
+        try {
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, link);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()){
+                if (rs.getString("link").equals(link)){
+                    return Path.of(rs.getString("path"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return null;
+    }
+
+    public static AllMyLinks allLinksByLogin(String login, AllMyLinks allMyLinks) {
+
+        String sql = "select * from links where users_id = " +
+                "(select id from users where login = ?)";
+        try {
+            pstmt  = conn.prepareStatement(sql);
+            pstmt.setString(1, login);
+            ResultSet rs = pstmt.executeQuery();
+            List<String> link = new ArrayList<>();
+            List<String> path = new ArrayList<>();
+            while (rs.next()) {
+                link.add(rs.getString("link"));
+                path.add(rs.getString("path"));
+            }
+            allMyLinks.setPathList(path);
+            allMyLinks.setLinkList(link);
+            return allMyLinks;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
+
+    public static void deleteCurrentLink(String link) {
+        String sql = "delete from links where link = ? " +
+                "limit 1";
+        try {
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, link);
+            pstmt.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public static void deleteAllLink(String login) {
+        String sql = "delete from links where users_id = " +
+                "(select id from users where login = ?)" +
+                "limit 1000";
+        try {
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, login);
+            pstmt.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 }

@@ -5,8 +5,8 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="124.0"
       prefWidth="200.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
-fx:controller="com.example.cloudapplication.MainController">
-   <Label layoutX="45.0" layoutY="23.0" text="Enter Directory name"/>
+fx:controller="com.example.cloudapplication.NewDirServerController">
+   <Label layoutX="45.0" layoutY="23.0" text="Enter Directory name" />
    <TextField layoutX="26.0" layoutY="50.0" fx:id="newDirName"/>
-   <Button layoutX="75.0" layoutY="85.0" mnemonicParsing="false" text="Create" fx:id="newDirButton" onAction="#makeNewDirServer"/>
+   <Button layoutX="75.0" layoutY="85.0" mnemonicParsing="false" text="Create"  onAction="#makeNewDirServer"/>
 </Pane>

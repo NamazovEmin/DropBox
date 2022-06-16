@@ -2,10 +2,7 @@ package com.example.cloudapplication;
 
 import com.example.cloud.*;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -16,32 +13,27 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MainController implements Initializable {
 
-
     public TextField clientPath;
     public TextField serverPath;
-    public TextField newDirName;
-    public Button newDirButton;
-    private Path homeDir = Path.of(System.getProperty("user.home"));
-
-    @FXML
     public ListView<String> clientView;
-
-    @FXML
     public ListView<String> serverView;
-
+    public static AllMyLinks linkFile;
+    static Path homeDir = Path.of(System.getProperty("user.home"));
     private final Network network = MainApplication.network;
 
     private void readLoop() {
         try {
-
             while (true) {
                 CloudMessage message = network.read();
+                System.out.println("here we work to");
                 if (message instanceof ListFiles listFiles) {
                     Platform.runLater(() -> {
                         serverView.getItems().clear();
@@ -51,6 +43,54 @@ public class MainController implements Initializable {
                 } else if (message instanceof FileMessage fileMessage) {
                     Path current = homeDir.resolve(fileMessage.getName());
                     Files.write(current, fileMessage.getData());
+                    Platform.runLater(() -> {
+                        clientView.getItems().clear();
+                        clientView.getItems().addAll(getFiles(homeDir.toString()));
+                    });
+                } else if (message instanceof  ShareFile shareFile) {
+                    Platform.runLater(() -> new NewLinkServerApplication(shareFile));
+                } else if (message instanceof AllMyLinks allMyLinks) {
+                    linkFile = allMyLinks;
+                    Platform.runLater(LinkViewApplication::new);
+                } else if (message instanceof DirectoryAndFileMessage directoryAndFileMessage) {
+                    for (int i = 0; i < directoryAndFileMessage.getDirName().size(); i++) {
+                        new File(String.valueOf(homeDir.resolve(directoryAndFileMessage.getDirName().get(i)))).mkdirs();
+                    }
+                    AtomicBoolean a = new AtomicBoolean();
+                    for (int i = 0; i < directoryAndFileMessage.getFileName().size(); i++) {
+                        a.set(true);
+// хотел сделать подтверждение на замену файлов, но не смог понять, как поставить на ожидание.
+// если это возможно, подскажите пожалуйста
+//                        if (Files.exists(homeDir.resolve(directoryAndFileMessage.getFileName().get(i)))) {
+//                            Platform.runLater(() -> {
+//                                Thread newThread = Thread.currentThread();
+//                                Stage stage = new Stage();
+//                                Button button = new Button("нет");
+//                                VBox vBox = new VBox(button);
+//                                vBox.setAlignment(Pos.CENTER);
+//                                FlowPane flowPane = new FlowPane();
+//                                flowPane.getChildren().addAll(vBox);
+//                                Scene scene = new Scene(flowPane, 170, 80);
+//                                stage.setScene(scene);
+//                                stage.setTitle("Shared File");
+//                                stage.initOwner(MainApplication.stage);
+//                                stage.setX(MainApplication.stage.getX() + 200);
+//                                stage.setY(MainApplication.stage.getY() + 100);
+//                                stage.initModality(Modality.WINDOW_MODAL);
+//                                stage.show();
+//
+//                                button.setOnAction(actionEvent -> {
+//                                    a.set(false);
+//                                  Stage stage1 = (Stage) button.getScene().getWindow();
+//                                  stage1.close();
+//                                });
+//                            });
+//                        }
+                        if (a.get()) {
+                            Files.write(homeDir.resolve(directoryAndFileMessage.getFileName().get(i)),
+                                    directoryAndFileMessage.getDataList().get(i));
+                        }
+                    }
                     Platform.runLater(() -> {
                         clientView.getItems().clear();
                         clientView.getItems().addAll(getFiles(homeDir.toString()));
@@ -84,35 +124,64 @@ public class MainController implements Initializable {
         return Arrays.asList(list);
     }
 
-    public void upload(ActionEvent actionEvent) throws IOException {
+    public void upload() throws IOException {
         String file = clientView.getSelectionModel().getSelectedItem();
-        network.write(new FileMessage(homeDir.resolve(file)));
+        Path testPath = homeDir.resolve(file);
+        if (Files.isDirectory(homeDir.resolve(file))) {
+            List<Path> fileList = new ArrayList<>();
+            List<Path> dirList = new ArrayList<>();
+            List<Path> buffList = new ArrayList<>();
+            List<Path> buffDir = new ArrayList<>();
+            buffDir.add(testPath);
+            while (true) {
+                for (Path path : buffDir) {
+                    dirList.add(path);
+                    if (Files.list(path) != null) {
+                        buffList.addAll(Files.list(path).toList());
+                    }
+                }
+                buffDir.clear();
+                for (Path path : buffList) {
+                    if (Files.isDirectory(path)) {
+                        buffDir.add(path);
+                    } else {
+                        fileList.add(path);
+                    }
+                }
+                buffList.clear();
+                if (buffDir.size() == 0) {
+                    break;
+                }
+            }
+            network.write(new DirectoryAndFileMessage(dirList,homeDir,fileList));
+        } else {
+            network.write(new FileMessage(homeDir.resolve(file)));
+        }
     }
 
-    public void download(ActionEvent actionEvent) throws IOException {
+    public void download() throws IOException {
         String file = serverView.getSelectionModel().getSelectedItem();
         network.write(new FileRequest(file));
     }
 
     public void pathInRequestClients(MouseEvent mouseEvent) {
-
         try {
             if ( mouseEvent.getClickCount() == 2 ){
                 String fileName = clientView.getSelectionModel().getSelectedItem();
-                homeDir = homeDir.resolve(fileName);
-                System.out.println(homeDir);
-                if (Files.isDirectory(homeDir)){
+                if (Files.isDirectory(homeDir.resolve(fileName))){
+                    homeDir = homeDir.resolve(fileName);
+                    System.out.println(homeDir);
                     clientView.getItems().clear();
                     clientView.getItems().addAll(getFiles(homeDir.toString()));
                     clientPath.clear();
                     clientPath.setText(homeDir.toString());
                 }
             }
-        }catch (RuntimeException ignored){
+        } catch (RuntimeException ignored){
         }
     }
 
-    public void pathUpRequestClient(ActionEvent actionEvent) {
+    public void pathUpRequestClient() {
             if (homeDir.getParent() != null) {
                 homeDir = homeDir.getParent();
                 System.out.println(homeDir);
@@ -123,7 +192,7 @@ public class MainController implements Initializable {
             }
     }
 
-    public void pathUpRequestServer(ActionEvent actionEvent) throws IOException {
+    public void pathUpRequestServer() throws IOException {
         network.write(new PathUpRequest());
     }
 
@@ -132,12 +201,12 @@ public class MainController implements Initializable {
             if (mouseEvent.getClickCount() == 2 ){
                 String fileName = serverView.getSelectionModel().getSelectedItem();
                 network.write(new PathInRequest(fileName));
-            }
-        }catch (RuntimeException ignored){
+             }
+          }catch (RuntimeException ignored){
         }
     }
 
-    public void goClientPath(ActionEvent actionEvent) {
+    public void goClientPath() {
         if (Files.isDirectory(Path.of(clientPath.getText()))) {
             homeDir = Path.of(clientPath.getText()).toAbsolutePath();
             clientView.getItems().clear();
@@ -147,18 +216,35 @@ public class MainController implements Initializable {
         }
     }
 
-    public void goServerPath(ActionEvent actionEvent) throws IOException {
+    public void goServerPath() throws IOException {
         String file = serverPath.getText();
         network.write(new PathFindRequest(file));
     }
 
-    public void newDirServer(ActionEvent actionEvent) {
-        new NewDirApplication();
+
+    public void newDirServer() {
+        new NewDirServerApplication();
     }
 
-    public void makeNewDirServer(ActionEvent actionEvent) throws IOException {
-        network.write(new NewDir(newDirName.getText()));
-        Stage stage = (Stage) newDirButton.getScene().getWindow();
-        stage.close();
+    public void newDirClient() {
+        Stage stage = new Stage();
+        Platform.runLater(() -> new NewDirClientApplication(stage));
+        stage.setOnCloseRequest(windowEvent -> {
+            clientView.getItems().clear();
+            clientView.getItems().addAll(getFiles(homeDir.toString()));
+        });
+    }
+
+    public void shareFile() throws IOException {
+        String fileName = serverView.getSelectionModel().getSelectedItem();
+        network.write(new ShareFile(fileName));
+    }
+
+    public void downloadFromLink() {
+        Platform.runLater(DownloadFromLinkApplication::new);
+    }
+
+    public void loadAllMyLinks() throws IOException {
+        network.write(new AllMyLinks());
     }
 }

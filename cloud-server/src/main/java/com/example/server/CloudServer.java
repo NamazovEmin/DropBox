@@ -23,15 +23,13 @@ public class CloudServer {
         EventLoopGroup auth = new NioEventLoopGroup(1);
         EventLoopGroup worker = new NioEventLoopGroup();
         DataBase.getInstance();
-
         try {
-
             ServerBootstrap server = new ServerBootstrap();
             server.group(auth, worker)
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
-                        protected void initChannel(SocketChannel socketChannel) throws Exception {
+                        protected void initChannel(SocketChannel socketChannel) {
                             socketChannel.pipeline().addLast(
                                     new ObjectDecoder(ClassResolvers.cacheDisabled(null)),
                                     new ObjectEncoder(),
@@ -39,7 +37,6 @@ public class CloudServer {
                             );
                         }
                     });
-
             ChannelFuture future = server.bind(8189).sync();
             log.debug("Server is ready");
             future.channel().closeFuture().sync();

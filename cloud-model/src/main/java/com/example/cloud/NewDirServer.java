@@ -1,9 +1,9 @@
 package com.example.cloud;
 
-public class NewDir implements CloudMessage {
+public class NewDirServer implements CloudMessage {
     private final String dirName;
 
-    public NewDir(String dirName) {
+    public NewDirServer(String dirName) {
         this.dirName = dirName;
     }
 

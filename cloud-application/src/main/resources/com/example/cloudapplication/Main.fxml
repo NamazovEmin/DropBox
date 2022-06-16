@@ -10,6 +10,11 @@
          <TextField fx:id="clientPath" prefHeight="50.0" prefWidth="411.0" />
          <Button mnemonicParsing="false" onAction="#goClientPath" prefHeight="50.0" prefWidth="80.0" text="Go" />
       </HBox>
+      <HBox prefHeight="25.0" prefWidth="570.0">
+         <Button mnemonicParsing="false" onAction="#newDirClient" prefHeight="50.0" prefWidth="80.0" text="NewDir" />
+         <Button mnemonicParsing="false" onAction="#downloadFromLink" text="LoadFromLink" />
+         <Button mnemonicParsing="false" text="MyLinks" onAction="#loadAllMyLinks" />
+      </HBox>
       <ListView fx:id="clientView" onMouseClicked="#pathInRequestClients" prefHeight="565.0" prefWidth="570.0" />
    </VBox>
    <VBox prefHeight="600.0" prefWidth="60.0">
@@ -23,9 +28,8 @@
          <Button mnemonicParsing="false" onAction="#goServerPath" prefHeight="50.0" prefWidth="80.0" text="Go" />
       </HBox>
       <HBox layoutX="10.0" layoutY="10.0" prefHeight="25.0" prefWidth="570.0">
-         <Button mnemonicParsing="false" onAction="#newDirServer" prefHeight="50.0" prefWidth="80.0"
-                 text="NewDir" />
-         <Button mnemonicParsing="false"  prefHeight="50.0" prefWidth="80.0" text="ShareFile"/>
+         <Button mnemonicParsing="false" onAction="#newDirServer" prefHeight="50.0" prefWidth="80.0" text="NewDir" />
+         <Button mnemonicParsing="false" onAction="#shareFile" prefHeight="50.0" prefWidth="80.0" text="ShareFile" />
       </HBox>
       <ListView fx:id="serverView" onMouseClicked="#pathInRequestServer" prefHeight="543.0" prefWidth="570.0" />
    </VBox>

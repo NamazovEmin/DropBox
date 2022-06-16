@@ -30,6 +30,7 @@ public class Reg implements CloudMessage{
     public Boolean getReg() {
         return reg;
     }
+
     public void setReg(Boolean reg) {
         this.reg = reg;
     }

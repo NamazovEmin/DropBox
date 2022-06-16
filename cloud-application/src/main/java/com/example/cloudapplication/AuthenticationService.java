@@ -3,15 +3,14 @@ package com.example.cloudapplication;
 import com.example.cloud.CloudMessage;
 import io.netty.handler.codec.serialization.ObjectDecoderInputStream;
 import io.netty.handler.codec.serialization.ObjectEncoderOutputStream;
-
 import java.io.IOException;
 import java.net.Socket;
 
 public class AuthenticationService {
 
-    private ObjectDecoderInputStream is;
-    private ObjectEncoderOutputStream os;
-    private Socket socket;
+    private final ObjectDecoderInputStream is;
+    private final ObjectEncoderOutputStream os;
+    private final Socket socket;
 
     public AuthenticationService(int port) throws IOException {
         socket = new Socket("localhost", port);
