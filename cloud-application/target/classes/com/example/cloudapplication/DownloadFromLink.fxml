@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="124.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cloudapplication.DownloadFromLinkController">
+   <Label layoutX="59.0" layoutY="24.0" prefHeight="17.0" prefWidth="82.0" text="Enter your link" />
+   <TextField fx:id="downLoadLink" layoutX="26.0" layoutY="50.0" />
+   <Button layoutX="65.0" layoutY="85.0" mnemonicParsing="false" onAction="#downloadFileFromLink" text="Download" />
+</Pane>
